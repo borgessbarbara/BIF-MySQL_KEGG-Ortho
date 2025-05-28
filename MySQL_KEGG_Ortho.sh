@@ -27,7 +27,7 @@ MYSQL_DATA_SUBDIR="mysql_aula"
 HSA_DESCRIPTION_FILE="hsa_description"
 HSA_KO_LIST_FILE="hsa_ko.list"
 KO_DESC_FILE="ko_desc"
-K02MAP_FILE="KO2map" # Corrigido para KO2map conforme o script original, o tutorial usa K02map.
+K02MAP_FILE="KO2map"
 
 # Arquivo de saída do BLAST
 BLAST_OUTPUT_FILE="megakegg"
@@ -179,100 +179,100 @@ exec_mysql_block "$INIT_CMDS" "" # Executa sem selecionar um BD específico inic
 DDL_DML_CMDS=$(cat <<EOF
 USE \`$MYSQL_DB_NAME\`;
 
--- 11) Criando uma tabela para armazenar os dados do BLAST [cite: 63]
+-- 11) Criando uma tabela para armazenar os dados do BLAST
 CREATE TABLE IF NOT EXISTS result_blast (
-    cds VARCHAR(15), -- [cite: 65]
-    subject VARCHAR(50), -- [cite: 66]
-    identity DOUBLE(5,2), -- [cite: 66]
-    evalue VARCHAR(10), -- [cite: 67]
-    score INT, -- [cite: 68]
-    INDEX cds_idx (cds) -- [cite: 68]
+    cds VARCHAR(15), 
+    subject VARCHAR(50), 
+    identity DOUBLE(5,2), 
+    evalue VARCHAR(10), 
+    score INT, 
+    INDEX cds_idx (cds) 
 );
 
--- 13) Carregando os dados do arquivo para a tabela [cite: 71]
+-- 13) Carregando os dados do arquivo para a tabela
 LOAD DATA LOCAL INFILE '$BLAST_TAB_FILE' INTO TABLE result_blast;
 
--- 16) Criando uma nova tabela com essas contagens [cite: 83]
+-- 16) Criando uma nova tabela com essas contagens
 DROP TABLE IF EXISTS hsa_count;
 CREATE TABLE hsa_count AS
-SELECT cds, COUNT(*) AS hits FROM result_blast GROUP BY cds; -- [cite: 83]
+SELECT cds, COUNT(*) AS hits FROM result_blast GROUP BY cds; 
 
--- 18) Criando uma tabela para as descrições dos genes [cite: 89]
+-- 18) Criando uma tabela para as descrições dos genes
 CREATE TABLE IF NOT EXISTS hsa_description (
-    cds VARCHAR(15), -- [cite: 91]
-    description VARCHAR(150), -- [cite: 91]
-    INDEX cds_idx (cds) -- [cite: 92]
+    cds VARCHAR(15), 
+    description VARCHAR(150), 
+    INDEX cds_idx (cds) 
 );
 
--- 20) Carregando as descrições na tabela [cite: 94]
+-- 20) Carregando as descrições na tabela
 LOAD DATA LOCAL INFILE '$MYSQL_DATA_SUBDIR/$HSA_DESCRIPTION_FILE' INTO TABLE hsa_description;
 
--- 22) Adicionando uma coluna de descrição na tabela hsa_count [cite: 101]
+-- 22) Adicionando uma coluna de descrição na tabela hsa_count
 ALTER TABLE hsa_count ADD COLUMN IF NOT EXISTS description VARCHAR(150);
 
--- 24) Atualizando a tabela hsa_count com as descrições dos genes [cite: 107]
+-- 24) Atualizando a tabela hsa_count com as descrições dos genes
 UPDATE hsa_count, hsa_description
-SET hsa_count.description = hsa_description.description -- [cite: 107]
-WHERE hsa_count.cds = hsa_description.cds; -- [cite: 107]
+SET hsa_count.description = hsa_description.description 
+WHERE hsa_count.cds = hsa_description.cds; 
 
--- 27) Criando uma tabela relacionando CDS e KO (Kegg Orthology) [cite: 118]
+-- 27) Criando uma tabela relacionando CDS e KO (Kegg Orthology)
 CREATE TABLE IF NOT EXISTS hsa_ko (
-    cds VARCHAR(15), -- [cite: 120]
-    ko VARCHAR(11), -- [cite: 121]
-    hits BIGINT DEFAULT 0, -- [cite: 121]
-    INDEX cds_idx (cds), -- [cite: 122]
-    INDEX ko_idx (ko) -- [cite: 122]
+    cds VARCHAR(15), 
+    ko VARCHAR(11), 
+    hits BIGINT DEFAULT 0, 
+    INDEX cds_idx (cds), 
+    INDEX ko_idx (ko) 
 );
 
--- 29) Carregando dados de mapeamento cds -> KO na tabela hsa_ko [cite: 126]
+-- 29) Carregando dados de mapeamento cds -> KO na tabela hsa_ko
 LOAD DATA LOCAL INFILE '$MYSQL_DATA_SUBDIR/$HSA_KO_LIST_FILE'
 INTO TABLE hsa_ko
 FIELDS TERMINATED BY '\t'
 (cds, ko);
 
--- 30) Atualizando a contagem de hits na tabela hsa_ko [cite: 129]
+-- 30) Atualizando a contagem de hits na tabela hsa_ko
 UPDATE hsa_ko, hsa_count
-SET hsa_ko.hits = hsa_count.hits -- [cite: 129]
-WHERE hsa_ko.cds = hsa_count.cds; -- [cite: 129]
+SET hsa_ko.hits = hsa_count.hits 
+WHERE hsa_ko.cds = hsa_count.cds; 
 
--- 32) Removendo os pares em que o CDS não teve hits [cite: 137]
+-- 32) Removendo os pares em que o CDS não teve hits
 DELETE FROM hsa_ko WHERE hits = 0;
 
--- 35) Criando uma tabela de agregação por KO [cite: 146]
+-- 35) Criando uma tabela de agregação por KO
 DROP TABLE IF EXISTS ko_hits;
 CREATE TABLE ko_hits AS
 SELECT
     ko,
-    COUNT(DISTINCT cds) AS total_cds, -- [cite: 148]
-    SUM(hits) AS total_hits -- [cite: 148]
+    COUNT(DISTINCT cds) AS total_cds, 
+    SUM(hits) AS total_hits 
 FROM hsa_ko
-GROUP BY ko; -- [cite: 146]
+GROUP BY ko; 
 
--- 37) Criando uma tabela com descrições dos KOs [cite: 152]
+-- 37) Criando uma tabela com descrições dos KOs
 CREATE TABLE IF NOT EXISTS ko_description (
-    ko VARCHAR(11) PRIMARY KEY, -- [cite: 152]
-    description VARCHAR(150) -- [cite: 152]
+    ko VARCHAR(11) PRIMARY KEY, 
+    description VARCHAR(150) 
 );
 
--- 38) Populando a tabela de descrições dos KOs [cite: 155]
+-- 38) Populando a tabela de descrições dos KOs
 LOAD DATA LOCAL INFILE '$MYSQL_DATA_SUBDIR/$KO_DESC_FILE' INTO TABLE ko_description;
 
--- 40) Adicionando coluna de descrição à tabela ko_hits [cite: 160]
+-- 40) Adicionando coluna de descrição à tabela ko_hits
 ALTER TABLE ko_hits ADD COLUMN IF NOT EXISTS ko_desc VARCHAR(150);
 
--- 41) Atualizando a tabela ko_hits com descrições [cite: 164]
+-- 41) Atualizando a tabela ko_hits com descrições
 UPDATE ko_hits, ko_description
-SET ko_hits.ko_desc = ko_description.description -- [cite: 164]
-WHERE ko_hits.ko = ko_description.ko; -- [cite: 164]
+SET ko_hits.ko_desc = ko_description.description 
+WHERE ko_hits.ko = ko_description.ko; 
 
--- 45) Criando uma tabela que relaciona KOs e vias metabólicas [cite: 179]
+-- 45) Criando uma tabela que relaciona KOs e vias metabólicas
 CREATE TABLE IF NOT EXISTS KOmap (
-    path VARCHAR(25), -- [cite: 181]
-    ko VARCHAR(25), -- [cite: 182]
-    path_desc VARCHAR(150) -- [cite: 182]
+    path VARCHAR(25), 
+    ko VARCHAR(25), 
+    path_desc VARCHAR(150) 
 );
 
--- 46) Carregando os dados de via KEGG para a tabela KOmap [cite: 184]
+-- 46) Carregando os dados de via KEGG para a tabela KOmap
 LOAD DATA LOCAL INFILE '$MYSQL_DATA_SUBDIR/$K02MAP_FILE' INTO TABLE KOmap;
 EOF
 )
@@ -281,24 +281,24 @@ echo "Comandos DDL e DML principais executados."
 
 # Consultas SELECT com saída para arquivos
 echo "Executando consultas SELECT e salvando resultados..."
-exec_mysql_query "USE \`$MYSQL_DB_NAME\`; DESC result_blast;" "12_desc_result_blast.txt" "$MYSQL_DB_NAME" # [cite: 69]
-exec_mysql_query "USE \`$MYSQL_DB_NAME\`; SELECT * FROM result_blast LIMIT 10;" "14_result_blast_amostra.txt" "$MYSQL_DB_NAME" # [cite: 76]
-exec_mysql_query "USE \`$MYSQL_DB_NAME\`; SELECT cds, COUNT(*) AS n_hits FROM result_blast GROUP BY cds ORDER BY n_hits DESC LIMIT 10;" "15_result_blast_contagem_cds_top10.txt" "$MYSQL_DB_NAME" # [cite: 79]
-exec_mysql_query "USE \`$MYSQL_DB_NAME\`; SELECT * FROM hsa_count LIMIT 10;" "17_hsa_count_amostra.txt" "$MYSQL_DB_NAME" # [cite: 87]
-exec_mysql_query "USE \`$MYSQL_DB_NAME\`; SELECT * FROM hsa_description LIMIT 10;" "21_hsa_description_amostra.txt" "$MYSQL_DB_NAME" # [cite: 97]
-exec_mysql_query "USE \`$MYSQL_DB_NAME\`; SELECT * FROM hsa_count LIMIT 10;" "25_hsa_count_com_descricao_amostra.txt" "$MYSQL_DB_NAME" # [cite: 112]
-exec_mysql_query "USE \`$MYSQL_DB_NAME\`; SELECT * FROM hsa_count ORDER BY hits DESC LIMIT 10;" "26_hsa_count_mais_hits_top10.txt" "$MYSQL_DB_NAME" # [cite: 114]
-exec_mysql_query "USE \`$MYSQL_DB_NAME\`; SELECT COUNT(*) AS 'Total_CDS_KO_antes_filtro' FROM hsa_ko;" "31_hsa_ko_contagem_total_antes_filtro.txt" "$MYSQL_DB_NAME" # [cite: 133]
-exec_mysql_query "USE \`$MYSQL_DB_NAME\`; SELECT COUNT(*) AS 'Total_CDS_KO_apos_filtro' FROM hsa_ko;" "33_hsa_ko_contagem_total_apos_filtro.txt" "$MYSQL_DB_NAME" # [cite: 140]
-exec_mysql_query "USE \`$MYSQL_DB_NAME\`; SELECT * FROM hsa_ko ORDER BY hits DESC LIMIT 10;" "34_hsa_ko_gene_mais_expresso_top10.txt" "$MYSQL_DB_NAME" # [cite: 143]
-exec_mysql_query "USE \`$MYSQL_DB_NAME\`; SELECT * FROM ko_hits LIMIT 10;" "36_ko_hits_amostra.txt" "$MYSQL_DB_NAME" # [cite: 150]
-exec_mysql_query "USE \`$MYSQL_DB_NAME\`; SELECT * FROM ko_description LIMIT 10;" "39_ko_description_amostra.txt" "$MYSQL_DB_NAME" # [cite: 158]
-exec_mysql_query "USE \`$MYSQL_DB_NAME\`; SELECT * FROM ko_hits LIMIT 10;" "42_ko_hits_com_descricao_amostra.txt" "$MYSQL_DB_NAME" # [cite: 167]
-exec_mysql_query "USE \`$MYSQL_DB_NAME\`; SELECT * FROM ko_hits ORDER BY total_hits DESC LIMIT 10;" "43_ko_hits_mais_hits_top10.txt" "$MYSQL_DB_NAME" # [cite: 170]
-exec_mysql_query "USE \`$MYSQL_DB_NAME\`; SELECT * FROM ko_hits WHERE ko_desc LIKE '%tumor%' LIMIT 10;" "44a_ko_hits_busca_tumor_top10.txt" "$MYSQL_DB_NAME" # [cite: 174]
-exec_mysql_query "USE \`$MYSQL_DB_NAME\`; SELECT * FROM ko_hits WHERE ko_desc LIKE '%catalase%' LIMIT 10;" "44b_ko_hits_busca_catalase_top10.txt" "$MYSQL_DB_NAME" # [cite: 175]
-exec_mysql_query "USE \`$MYSQL_DB_NAME\`; SELECT ko_hits.*, KOmap.path, KOmap.path_desc FROM ko_hits INNER JOIN KOmap ON ko_hits.ko = KOmap.ko ORDER BY total_hits DESC LIMIT 10;" "47_join_ko_hits_komap_top10.txt" "$MYSQL_DB_NAME" # [cite: 187]
-exec_mysql_query "USE \`$MYSQL_DB_NAME\`; SELECT ko_hits.*, KOmap.path, KOmap.path_desc FROM ko_hits INNER JOIN KOmap ON ko_hits.ko = KOmap.ko WHERE ko_hits.ko_desc LIKE '%tumor%' ORDER BY total_hits DESC LIMIT 10;" "BONUS_join_ko_hits_komap_filtro_tumor_top10.txt" "$MYSQL_DB_NAME" # [cite: 193]
+exec_mysql_query "USE \`$MYSQL_DB_NAME\`; DESC result_blast;" "12_desc_result_blast.txt" "$MYSQL_DB_NAME" 
+exec_mysql_query "USE \`$MYSQL_DB_NAME\`; SELECT * FROM result_blast LIMIT 10;" "14_result_blast_amostra.txt" "$MYSQL_DB_NAME" 
+exec_mysql_query "USE \`$MYSQL_DB_NAME\`; SELECT cds, COUNT(*) AS n_hits FROM result_blast GROUP BY cds ORDER BY n_hits DESC LIMIT 10;" "15_result_blast_contagem_cds_top10.txt" "$MYSQL_DB_NAME" 
+exec_mysql_query "USE \`$MYSQL_DB_NAME\`; SELECT * FROM hsa_count LIMIT 10;" "17_hsa_count_amostra.txt" "$MYSQL_DB_NAME" 
+exec_mysql_query "USE \`$MYSQL_DB_NAME\`; SELECT * FROM hsa_description LIMIT 10;" "21_hsa_description_amostra.txt" "$MYSQL_DB_NAME" 
+exec_mysql_query "USE \`$MYSQL_DB_NAME\`; SELECT * FROM hsa_count LIMIT 10;" "25_hsa_count_com_descricao_amostra.txt" "$MYSQL_DB_NAME" 
+exec_mysql_query "USE \`$MYSQL_DB_NAME\`; SELECT * FROM hsa_count ORDER BY hits DESC LIMIT 10;" "26_hsa_count_mais_hits_top10.txt" "$MYSQL_DB_NAME" 
+exec_mysql_query "USE \`$MYSQL_DB_NAME\`; SELECT COUNT(*) AS 'Total_CDS_KO_antes_filtro' FROM hsa_ko;" "31_hsa_ko_contagem_total_antes_filtro.txt" "$MYSQL_DB_NAME" 
+exec_mysql_query "USE \`$MYSQL_DB_NAME\`; SELECT COUNT(*) AS 'Total_CDS_KO_apos_filtro' FROM hsa_ko;" "33_hsa_ko_contagem_total_apos_filtro.txt" "$MYSQL_DB_NAME" 
+exec_mysql_query "USE \`$MYSQL_DB_NAME\`; SELECT * FROM hsa_ko ORDER BY hits DESC LIMIT 10;" "34_hsa_ko_gene_mais_expresso_top10.txt" "$MYSQL_DB_NAME" 
+exec_mysql_query "USE \`$MYSQL_DB_NAME\`; SELECT * FROM ko_hits LIMIT 10;" "36_ko_hits_amostra.txt" "$MYSQL_DB_NAME" 
+exec_mysql_query "USE \`$MYSQL_DB_NAME\`; SELECT * FROM ko_description LIMIT 10;" "39_ko_description_amostra.txt" "$MYSQL_DB_NAME" 
+exec_mysql_query "USE \`$MYSQL_DB_NAME\`; SELECT * FROM ko_hits LIMIT 10;" "42_ko_hits_com_descricao_amostra.txt" "$MYSQL_DB_NAME" 
+exec_mysql_query "USE \`$MYSQL_DB_NAME\`; SELECT * FROM ko_hits ORDER BY total_hits DESC LIMIT 10;" "43_ko_hits_mais_hits_top10.txt" "$MYSQL_DB_NAME" 
+exec_mysql_query "USE \`$MYSQL_DB_NAME\`; SELECT * FROM ko_hits WHERE ko_desc LIKE '%tumor%' LIMIT 10;" "44a_ko_hits_busca_tumor_top10.txt" "$MYSQL_DB_NAME" 
+exec_mysql_query "USE \`$MYSQL_DB_NAME\`; SELECT * FROM ko_hits WHERE ko_desc LIKE '%catalase%' LIMIT 10;" "44b_ko_hits_busca_catalase_top10.txt" "$MYSQL_DB_NAME" 
+exec_mysql_query "USE \`$MYSQL_DB_NAME\`; SELECT ko_hits.*, KOmap.path, KOmap.path_desc FROM ko_hits INNER JOIN KOmap ON ko_hits.ko = KOmap.ko ORDER BY total_hits DESC LIMIT 10;" "47_join_ko_hits_komap_top10.txt" "$MYSQL_DB_NAME" 
+exec_mysql_query "USE \`$MYSQL_DB_NAME\`; SELECT ko_hits.*, KOmap.path, KOmap.path_desc FROM ko_hits INNER JOIN KOmap ON ko_hits.ko = KOmap.ko WHERE ko_hits.ko_desc LIKE '%tumor%' ORDER BY total_hits DESC LIMIT 10;" "BONUS_join_ko_hits_komap_filtro_tumor_top10.txt" "$MYSQL_DB_NAME" 
 exec_mysql_query "USE \`$MYSQL_DB_NAME\`; SHOW TABLES;" "SHOW_TABLES_final.txt" "$MYSQL_DB_NAME"
 
 echo ""
