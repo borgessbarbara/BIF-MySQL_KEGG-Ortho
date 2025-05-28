@@ -1,0 +1,9 @@
+ko	total_cds	total_hits	ko_desc
+K04390	1	40	tumor necrosis factor receptor superfamily, member 6
+K04721	1	56	tumor necrosis factor superfamily, member 10
+K06635	1	2000	pituitary tumor-transforming
+K06737	1	304	tumor-associated calcium signal transducer 1
+K08791	1	12	LATS, large tumor suppressor [EC:2.7.11.1]
+K08830	1	200	renal tumor antigen [EC:2.7.11.22]
+K09560	1	144	suppressor of tumorigenicity protein 13
+K10133	1	16	tumor protein p53-inducible protein 3 [EC:1.-.-.-]

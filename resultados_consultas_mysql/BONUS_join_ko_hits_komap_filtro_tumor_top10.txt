@@ -1,0 +1,11 @@
+ko	total_cds	total_hits	ko_desc	path	path_desc
+K06635	1	2000	pituitary tumor-transforming	04110	Cell cycle
+K06635	1	2000	pituitary tumor-transforming	04114	Oocyte meiosis
+K06635	1	2000	pituitary tumor-transforming	04114	Oocyte meiosis
+K06635	1	2000	pituitary tumor-transforming	04110	Cell cycle
+K04721	1	56	tumor necrosis factor superfamily, member 10	04650	Natural killer cell mediated cytotoxicity
+K04721	1	56	tumor necrosis factor superfamily, member 10	04060	Cytokine-cytokine receptor interaction
+K04721	1	56	tumor necrosis factor superfamily, member 10	04060	Cytokine-cytokine receptor interaction
+K04721	1	56	tumor necrosis factor superfamily, member 10	04650	Natural killer cell mediated cytotoxicity
+K04390	1	40	tumor necrosis factor receptor superfamily, member 6	05330	Allograft rejection
+K04390	1	40	tumor necrosis factor receptor superfamily, member 6	05330	Allograft rejection

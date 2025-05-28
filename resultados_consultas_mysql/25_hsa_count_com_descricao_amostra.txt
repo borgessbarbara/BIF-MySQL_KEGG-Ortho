@@ -1,0 +1,11 @@
+cds	hits	description
+hsa:10	6	NAT2; N-acetyltransferase 2 (arylamine N-acetyltransferase) (EC:2.3.1.5); K00622 arylamine N-acetyltransferase [EC:2.3.1.5]
+hsa:100	4	ADA; adenosine deaminase (EC:3.5.4.4); K01488 adenosine deaminase [EC:3.5.4.4]
+hsa:10001	6	MED6; mediator complex subunit 6 
+hsa:100037417	2	DDTL; D-dopachrome tautomerase-like (EC:4.1.1.-)
+hsa:10006	40	ABI1; abl-interactor 1 
+hsa:10007	20	GNPDA1; glucosamine-6-phosphate deaminase 1 (EC:3.5.99.6); K02564 glucosamine-6-phosphate deaminase [EC:3.5.99.6]
+hsa:10010	82	TANK; TRAF family member-associated NFKB activator ; K12650 TRAF family member-associated NF-kappa-B activator
+hsa:100101467	2	ZNF397OS; zinc finger protein 397 opposite strand ; K09230 SCAN domain-containing zinc finger protein
+hsa:100101629	14	GAGE8; G antigen 8 
+hsa:10011	26	SRA1; steroid receptor RNA activator 1 

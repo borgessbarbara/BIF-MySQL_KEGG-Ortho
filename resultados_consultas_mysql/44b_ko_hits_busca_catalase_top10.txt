@@ -1,0 +1,2 @@
+ko	total_cds	total_hits	ko_desc
+K03781	1	128	catalase [EC:1.11.1.6]

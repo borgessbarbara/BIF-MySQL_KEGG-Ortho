@@ -1,0 +1,11 @@
+ko	total_cds	total_hits	ko_desc
+K00001	1	1220	alcohol dehydrogenase [EC:1.1.1.1]
+K00002	1	72	alcohol dehydrogenase (NADP+) [EC:1.1.1.2]
+K00011	1	12	aldehyde reductase [EC:1.1.1.21]
+K00012	1	12	UDPglucose 6-dehydrogenase [EC:1.1.1.22]
+K00015	1	12	glyoxylate reductase [EC:1.1.1.26]
+K00016	2	588	L-lactate dehydrogenase [EC:1.1.1.27]
+K00019	1	180	3-hydroxybutyrate dehydrogenase [EC:1.1.1.30]
+K00020	1	76	3-hydroxyisobutyrate dehydrogenase [EC:1.1.1.31]
+K00021	1	16	3-hydroxy-3-methylglutaryl-CoA reductase [EC:1.1.1.34]
+K00022	1	88	3-hydroxyacyl-CoA dehydrogenase [EC:1.1.1.35]

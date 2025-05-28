@@ -1,0 +1,8 @@
+Tables_in_Barbara
+KOmap
+hsa_count
+hsa_description
+hsa_ko
+ko_description
+ko_hits
+result_blast

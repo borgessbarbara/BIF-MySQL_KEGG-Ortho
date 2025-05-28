@@ -1,0 +1,6 @@
+Field	Type	Null	Key	Default	Extra
+cds	varchar(15)	YES	MUL	NULL	
+subject	varchar(50)	YES		NULL	
+identity	double(5,2)	YES		NULL	
+evalue	varchar(10)	YES		NULL	
+score	int(11)	YES		NULL	

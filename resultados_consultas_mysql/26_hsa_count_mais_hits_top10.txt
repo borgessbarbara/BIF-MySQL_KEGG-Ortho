@@ -1,0 +1,11 @@
+cds	hits	description
+hsa:9482	1014	STX8; syntaxin 8 ; K08501 syntaxin 8
+hsa:2224	1000	FDPS; farnesyl diphosphate synthase (farnesyl pyrophosphate synthetase, dimethylallyltranstransferase, geranyltranstransferase) (EC:2.5.1.1 2.5.1.10);
+hsa:11340	1000	EXOSC8; exosome component 8 (EC:3.1.13.-); K12586 exosome complex component RRP43
+hsa:4535	1000	ND1; NADH dehydrogenase, subunit 1 (complex I) ; K03878 NADH dehydrogenase I subunit 1 [EC:1.6.5.3]
+hsa:29097	1000	CNIH4; cornichon homolog 4 (Drosophila) 
+hsa:11315	1000	PARK7; Parkinson disease (autosomal recessive, early onset) 7 ; K05687 protein DJ-1
+hsa:28998	1000	MRPL13; mitochondrial ribosomal protein L13 ; K02871 large subunit ribosomal protein L13
+hsa:10605	1000	PAIP1; poly(A) binding protein interacting protein 1 
+hsa:10284	1000	SAP18; Sin3A-associated protein, 18kDa 
+hsa:4514	1000	COX3; cytochrome c oxidase III ; K02262 cytochrome c oxidase subunit III [EC:1.9.3.1]

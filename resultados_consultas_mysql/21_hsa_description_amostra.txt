@@ -1,0 +1,11 @@
+cds	description
+hsa:8355	HIST1H3G; histone cluster 1, H3g ; K11253 histone H3
+hsa:9081	PRY; PTPN13-like, Y-linked 
+hsa:23434	C3orf27; chromosome 3 open reading frame 27 
+hsa:51054	PLEKHA9; pleckstrin homology domain containing, family A (phosphoinositide binding specific) member 9 
+hsa:50717	WDR42A; WD repeat domain 42A ; K11804 WD repeat-containing protein 42A
+hsa:64163	IFRG15; interferon responsive gene 15 ; K11794 IFRG15 protein
+hsa:54980	C2orf42; chromosome 2 open reading frame 42 
+hsa:404093	CUEDC1; CUE domain containing 1 
+hsa:57821	C1orf114; chromosome 1 open reading frame 114 
+hsa:57577	KIAA1407 

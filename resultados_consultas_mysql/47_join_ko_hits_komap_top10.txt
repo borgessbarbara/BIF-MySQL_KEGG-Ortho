@@ -1,0 +1,11 @@
+ko	total_cds	total_hits	ko_desc	path	path_desc
+K00799	12	6372	glutathione S-transferase [EC:2.5.1.18]	00982	Drug metabolism - cytochrome P450
+K00799	12	6372	glutathione S-transferase [EC:2.5.1.18]	00480	Glutathione metabolism
+K00799	12	6372	glutathione S-transferase [EC:2.5.1.18]	00980	Metabolism of xenobiotics by cytochrome P450
+K00799	12	6372	glutathione S-transferase [EC:2.5.1.18]	00982	Drug metabolism - cytochrome P450
+K00799	12	6372	glutathione S-transferase [EC:2.5.1.18]	00480	Glutathione metabolism
+K00799	12	6372	glutathione S-transferase [EC:2.5.1.18]	00980	Metabolism of xenobiotics by cytochrome P450
+K00940	4	2992	nucleoside-diphosphate kinase [EC:2.7.4.6]	00230	Purine metabolism
+K00940	4	2992	nucleoside-diphosphate kinase [EC:2.7.4.6]	00240	Pyrimidine metabolism
+K00940	4	2992	nucleoside-diphosphate kinase [EC:2.7.4.6]	00230	Purine metabolism
+K00940	4	2992	nucleoside-diphosphate kinase [EC:2.7.4.6]	00240	Pyrimidine metabolism
